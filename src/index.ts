@@ -2,5 +2,7 @@ import { createApp } from 'vue'
 import VueRouter from 'vue-router'
 import App from './App.vue'
 import router from './router';
+import Antd from 'ant-design-vue'
+import 'ant-design-vue/dist/antd.css';
 
-const app = createApp(App).use(router).mount('#app');
+const app = createApp(App).use(router).use(Antd).mount('#app');

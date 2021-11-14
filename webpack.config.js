@@ -17,7 +17,15 @@ const config = {
   devServer: {
     open: true,
     host: "0.0.0.0",
-    port: 8090
+    port: 8090,
+    proxy: {
+      "/qyapi": {
+        target: "https://qyapi.weixin.qq.com",
+        changeOrigin: true,
+        secure: false,
+        pathRewrite: { "^/qyapi": "" }
+      }
+    }
   },
   devtool: 'source-map',
   plugins: [
