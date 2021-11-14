@@ -13,6 +13,13 @@ const config = {
   entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
+    devtoolModuleFilenameTemplate: info => {
+      const resPath = info.resourcePath;
+      if ((/\.vue$/.test(resPath) && !/type=script/.test(info.identifier)) || /node_modules/.test(resPath)) {
+          return `webpack:///${resPath}?${info.hash}`
+      }
+      return `webpack:///${resPath}`.replace('./src', 'my-code/src')
+    }
   },
   devServer: {
     open: true,
@@ -45,6 +52,10 @@ const config = {
   module: {
     rules: [
       {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
+      {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         options: {
@@ -59,10 +70,6 @@ const config = {
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
         type: "asset",
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
       },
 
       // Add your rules for custom modules here

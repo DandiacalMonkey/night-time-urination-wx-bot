@@ -1,7 +1,7 @@
 {
-  "name": "my-webpack-project",
+  "name": "night-time-urination-wx-bot",
   "version": "1.0.0",
-  "description": "My webpack project",
+  "description": "night-time-urination-wx-bot",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
     "watch": "webpack --watch",
-    "serve": "webpack serve"
+    "serve": "webpack-dev-server --hot --progress --no-open"
   },
   "author": "DandiacalMonkey",
   "license": "MIT",
