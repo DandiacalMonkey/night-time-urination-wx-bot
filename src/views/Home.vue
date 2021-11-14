@@ -1,37 +1,36 @@
 <template>
-    <div>{{ botWebhook }}</div>
-    <a-input ref=botWebhookInput v-bind:addon-before="botWebhookAddonBefore"
-             placeholder="企业微信群机器人webhook" v-model:value="botWebhook" />
-    <button v-on:click="send">send</button>
+    <TaskList v-bind:tasks="botMessage.tasks" v-on:selected="onSelected"
+              v-bind:selectedIndex="selectedIndex"></TaskList>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
-import axios from 'axios'
+import { defineComponent, ref, computed } from 'vue'
+import * as BotMessage from '../scripts/BotMessage'
+import TaskList from './TaskList.vue'
 
 export default defineComponent({
-    data () {
-        return {
-            response: '' as string,
-            botWebhook: '' as string,
-            botWebhookAddonBefore: 'https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key='
-        };
+    components: {
+        TaskList
     },
-    methods: {
-        send() {
-            let that = this;
-            axios.post('/qyapi/cgi-bin/webhook/send',
-            {
-                msgtype: "text",
-                text: {
-                    content: "测试消息"
-                }
-            },
-            {
-                params: {
-                    key: this.botWebhook
-                }
-            }).then((value) => that.response = JSON.stringify(value.data));
+    setup(props, context) {
+        // 储存全局所有消息任务
+        let botMessage = ref(new BotMessage.BotMessage());
+        let task = new BotMessage.BotMessageTask();
+        task.name = '任务1';
+        botMessage.value.tasks.push(task);
+        botMessage.value.tasks.push(task);
+        botMessage.value.tasks.push(task);
+        botMessage.value.tasks.push(task);
+        // 当前选中的任务
+        let selectedIndex = ref(0);
+        // 选择序号并切换
+        function onSelected(index: number) {
+            selectedIndex.value = index;
+        }
+        return {
+            botMessage,
+            selectedIndex,
+            onSelected,
         }
     }
 });

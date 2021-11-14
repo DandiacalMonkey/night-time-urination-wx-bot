@@ -11,7 +11,6 @@
             "webRoot": "${workspaceFolder}",
             "preLaunchTask": "npm: serve",
             "url": "http://localhost:8090",
-            "breakOnLoad": true,
             "sourceMaps": true,
             "sourceMapPathOverrides": {
                 "meteor://💻app/*": "${workspaceFolder}/*",
