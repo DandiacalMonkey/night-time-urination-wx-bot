@@ -1,18 +1,21 @@
 <template>
+  <div>
     <a-list item-layout="horizontal" :data-source="tasks">
-    <template #renderItem="{ item, index }">
-      <a-list-item v-bind:class="{taskItem: index != selectedIndex, selectedTaskItem: index == selectedIndex}" v-on:click="$emit('selected', index)">
-        <a-list-item-meta>
-          <template #title>
-            <div class="taskItemName">{{ item.name }}</div>
-          </template>
-          <template #avatar>
-            <SettingOutlined />
-          </template>
-        </a-list-item-meta>
-      </a-list-item>
-    </template>
-  </a-list>
+      <template #renderItem="{ item, index }">
+        <a-list-item v-bind:class="{taskItem: index != selectedIndex, selectedTaskItem: index == selectedIndex}" v-on:click="$emit('selected', index)">
+          <a-list-item-meta>
+            <template #title>
+              <div class="taskItemName">{{ item.name }}</div>
+            </template>
+            <template #avatar>
+              <SettingOutlined />
+            </template>
+          </a-list-item-meta>
+        </a-list-item>
+      </template>
+    </a-list>
+    <a-button v-on:click="$emit('addTask')">添加任务</a-button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -31,10 +34,13 @@ export default defineComponent({
     emits: {
         selected(index: number) {
             return true;
+        },
+        addTask() {
+          return true;
         }
     },
     setup(props, context) {
-        console.log(props);
+        
     }
 });
 

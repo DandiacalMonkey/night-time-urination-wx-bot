@@ -7,6 +7,16 @@ enum BotMessageType {
     TEMPLATE_CARD = 'template_card'
 }
 
+enum Week {
+    MONDAY = 'Monday',
+    TUESDAY = 'Tuesday',
+    WEDNESDAY = 'Wednesday',
+    THURSDAY = 'Thursday',
+    FRIDAY = 'Friday',
+    SATURDAY = 'Saturday',
+    SUNDAY = 'Sunday'
+}
+
 interface BotTextMessage {
     content: string;
     mentioned_list: Array<string>;
@@ -35,6 +45,9 @@ interface BotFileMessage {
 
 class BotMessageTask {
     name = '';
+    week = new Array<Week>();
+    weekdays = false;
+    time = '';
     msgtype = BotMessageType.TEXT;
     text: BotTextMessage = {
         content: '',
@@ -58,4 +71,4 @@ class BotMessage {
     tasks: Array<BotMessageTask> = new Array<BotMessageTask>();
 }
 
-export {BotMessageType, BotTextMessage, BotImageMessage, BotNewsArticles, BotNewsMessage, BotFileMessage, BotMessageTask, BotMessage};
+export {BotMessageType, Week, BotTextMessage, BotImageMessage, BotNewsArticles, BotNewsMessage, BotFileMessage, BotMessageTask, BotMessage};
