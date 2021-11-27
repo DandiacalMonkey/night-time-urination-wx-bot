@@ -149,38 +149,43 @@ export default defineComponent({
                 }
                 switch (Week[y]) {
                     case Week.MONDAY:
-                        item.label = '星期一'
+                        item.label = '星期一';
+                        result.push(item);
                         break;
                     case Week.TUESDAY:
-                        item.label = '星期二'
+                        item.label = '星期二';
+                        result.push(item);
                         break;
                     case Week.WEDNESDAY:
-                        item.label = '星期三'
+                        item.label = '星期三';
+                        result.push(item);
                         break;
                     case Week.THURSDAY:
-                        item.label = '星期四'
+                        item.label = '星期四';
+                        result.push(item);
                         break;
                     case Week.FRIDAY:
-                        item.label = '星期五'
+                        item.label = '星期五';
+                        result.push(item);
                         break;
                     case Week.SATURDAY:
-                        item.label = '星期六'
+                        item.label = '星期六';
+                        result.push(item);
                         break;
                     case Week.SUNDAY:
-                        item.label = '星期日'
+                        item.label = '星期日';
+                        result.push(item);
                         break;
                     default:
                         break;
                 }
-                result.push(item);
             }
             return result;
         });
         // 星期全选选项
         let allWeekOptions = new Array<Week>();
-        for (let x in Week) {
-            const y = x as WeekKeyType;
-            allWeekOptions.push(Week[y]);
+        for (let i = 0; i < 7; ++i) {
+            allWeekOptions.push(i);
         }
         // 星期全选、不定标志位
         let checkAllWeek = ref(false);

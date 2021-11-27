@@ -14,15 +14,19 @@
         </div>
         <div id="footer">
             <a-button v-on:click="onDownloadConfig">下载配置文件</a-button>
+            <a-button v-on:click="onLoadConfig">加载配置文件</a-button>
+            <div>开启定时任务</div>
+            <a-switch v-on:change="onScheduleChange" v-model:checked="isScheduleStart" />
         </div>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue'
+import { defineComponent, ref, Ref, computed } from 'vue'
 import * as BotMessage from '../scripts/BotMessage'
 import TaskList from './TaskList.vue'
 import TaskSettings from './TaskSettings.vue'
+import BotMessageSender from '../scripts/BotMessageSender'
 
 export default defineComponent({
     components: {
@@ -61,7 +65,40 @@ export default defineComponent({
         const botInterfaceUrl = ref('https://qyapi.weixin.qq.com/cgi-bin/webhook/send');
         // 下载配置文件
         function onDownloadConfig() {
-            alert(JSON.stringify(botMessage.value));
+            console.log(URL.createObjectURL(new Blob([JSON.stringify(botMessage.value)], {type: 'text/plain'})));
+            let downloadAnchor: HTMLAnchorElement = document.createElement('a');
+            downloadAnchor.download = 'config.txt';
+            downloadAnchor.href = URL.createObjectURL(new Blob([JSON.stringify(botMessage.value)], {type: 'text/plain'}));
+            downloadAnchor.click();
+        }
+        // 读取配置文件
+        function onLoadConfig() {
+            let fileInput = document.createElement('input');
+            fileInput.setAttribute('type', 'file');
+            fileInput.onchange = () => {
+                if (fileInput.files &&
+                fileInput.files.length > 0) {
+                    const file = fileInput.files[0];
+                    if (file.name.length != 0) {
+                        let reader = new FileReader();
+                        reader.onload = () => {
+                            alert('load');
+                            botMessage.value = JSON.parse(reader.result as string);
+                        };
+                        reader.readAsText(file);
+                    }
+                }
+            };
+            fileInput.click();
+        }
+        // 开始定时任务
+        let sender = new BotMessageSender();
+        function onScheduleChange(checked: boolean) {
+            if (checked === true) {
+                sender.sendMessageSchedule(botMessage.value);
+            } else {
+                sender.cancelSendMessageSchedule();
+            }
         }
         return {
             botMessage,
@@ -69,7 +106,10 @@ export default defineComponent({
             onSelected,
             onAddTask,
             botInterfaceUrl,
-            onDownloadConfig
+            onDownloadConfig,
+            onLoadConfig,
+            onScheduleChange,
+            isScheduleStart: ref(false)
         }
     }
 });
