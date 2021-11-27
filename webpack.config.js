@@ -13,6 +13,7 @@ const config = {
   entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
+    publicPath: isProduction ? "/night-time-urination-wx-bot" : "/",
     devtoolModuleFilenameTemplate: info => {
       const resPath = info.resourcePath;
       if ((/\.vue$/.test(resPath) && !/type=script/.test(info.identifier)) || /node_modules/.test(resPath)) {
@@ -21,7 +22,6 @@ const config = {
       return `webpack:///${resPath}`.replace('./src', 'my-code/src')
     }
   },
-  publicPath: isProduction ? "/night-time-urination-wx-bot" : "/",
   devServer: {
     open: true,
     host: "0.0.0.0",
