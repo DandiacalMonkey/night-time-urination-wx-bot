@@ -13,6 +13,7 @@
                 v-bind:botKey="botMessage.key"></TaskSettings>
         </div>
         <div id="footer">
+            <a-button v-on:click="onDownloadScript">下载运行脚本</a-button>
             <a-button v-on:click="onDownloadConfig">下载配置文件</a-button>
             <a-button v-on:click="onLoadConfig">加载配置文件</a-button>
             <div>开启定时任务</div>
@@ -61,11 +62,17 @@ export default defineComponent({
             task.name = `${namePrefix}${index}`;
             botMessage.value.tasks.push(task);
         }
+        // 下载运行脚本
+        function onDownloadScript() {
+            let downloadAnchor: HTMLAnchorElement = document.createElement('a');
+            downloadAnchor.download = 'schedule.js';
+            downloadAnchor.href = window.location + 'schedule.js';
+            downloadAnchor.click();
+        };
         // 群机器人接口地址
         const botInterfaceUrl = ref('https://qyapi.weixin.qq.com/cgi-bin/webhook/send');
         // 下载配置文件
         function onDownloadConfig() {
-            console.log(URL.createObjectURL(new Blob([JSON.stringify(botMessage.value)], {type: 'text/plain'})));
             let downloadAnchor: HTMLAnchorElement = document.createElement('a');
             downloadAnchor.download = 'config.txt';
             downloadAnchor.href = URL.createObjectURL(new Blob([JSON.stringify(botMessage.value)], {type: 'text/plain'}));
@@ -82,7 +89,6 @@ export default defineComponent({
                     if (file.name.length != 0) {
                         let reader = new FileReader();
                         reader.onload = () => {
-                            alert('load');
                             botMessage.value = JSON.parse(reader.result as string);
                         };
                         reader.readAsText(file);
@@ -95,7 +101,7 @@ export default defineComponent({
         let sender = new BotMessageSender();
         function onScheduleChange(checked: boolean) {
             if (checked === true) {
-                sender.sendMessageSchedule(botMessage.value);
+                sender.sendMessageSchedule('/qyapi/cgi-bin/webhook/send', botMessage.value);
             } else {
                 sender.cancelSendMessageSchedule();
             }
@@ -106,6 +112,7 @@ export default defineComponent({
             onSelected,
             onAddTask,
             botInterfaceUrl,
+            onDownloadScript,
             onDownloadConfig,
             onLoadConfig,
             onScheduleChange,

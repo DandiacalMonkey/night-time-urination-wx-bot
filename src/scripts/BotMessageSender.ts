@@ -3,18 +3,18 @@ import axios from 'axios'
 import moment from 'moment';
 
 class BotMessageSender {
-    sendTaskImmediately(task: BotMessageTask, key:string) {
-        axios.post('/qyapi/cgi-bin/webhook/send', task, {
+    sendTaskImmediately(url: string, task: BotMessageTask, key: string) {
+        axios.post(url, task, {
             params: {
                 key
             }
         }).then((respons) => console.log(respons));
     };
-    sendMessageSchedule(message: BotMessage) {
+    sendMessageSchedule(url: string, message:BotMessage) {
         let that = this;
         this.previousScanTime = moment();
         // 每100ms执行一次扫描
-        this.scanTimerId = window.setInterval(() => {
+        this.scanTimerId = setInterval(() => {
             let current = moment();
             for (const task of message.tasks) {
                 let taskTrigMoment = moment(task.time, "HH:mm");
@@ -27,18 +27,18 @@ class BotMessageSender {
                     continue;
                 }
                 if (taskTrigMoment.isBetween(that.previousScanTime, current)) {
-                    axios.post('/qyapi/cgi-bin/webhook/send', task, {
+                    axios.post(url, task, {
                         params: {
                             key: message.key
                         }
-                    }).then((respons) => alert(JSON.stringify(respons)));
+                    });
                 }
             }
             that.previousScanTime = current;
         }, 100);
     };
     cancelSendMessageSchedule() {
-        window.clearInterval(this.scanTimerId);
+        clearInterval(this.scanTimerId);
     }
     // 确定是否是工作日
     isWeekDays(checked_moment: moment.Moment): boolean {
@@ -97,7 +97,7 @@ class BotMessageSender {
         return true;
     }
     // 扫描定时器id
-    scanTimerId = 0;
+    scanTimerId:any = null;
     // 储存每个任务上一次扫描的时间
     previousScanTime = moment();
 }

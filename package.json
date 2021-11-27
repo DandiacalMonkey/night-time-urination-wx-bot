@@ -8,6 +8,7 @@
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
     "build:prod": "webpack --mode=production --node-env=production",
+    "build:schedule": "webpack --config webpack.schedule.config.js --mode=production --node-env=production",
     "watch": "webpack --watch",
     "serve": "webpack-dev-server --hot --progress --no-open"
   },
