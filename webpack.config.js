@@ -21,6 +21,7 @@ const config = {
       return `webpack:///${resPath}`.replace('./src', 'my-code/src')
     }
   },
+  publicPath: isProduction ? "/night-time-urination-wx-bot" : "/",
   devServer: {
     open: true,
     host: "0.0.0.0",
@@ -42,7 +43,8 @@ const config = {
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: isProduction ? JSON.stringify("production") : JSON.stringify("development")
+        NODE_ENV: isProduction ? JSON.stringify("production") : JSON.stringify("development"),
+        BASE_URL: isProduction ? JSON.stringify("/night-time-urination-wx-bot") : JSON.stringify("/"),
       }
     })
 
