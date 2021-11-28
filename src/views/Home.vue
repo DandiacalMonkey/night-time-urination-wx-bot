@@ -1,23 +1,30 @@
 <template>
-    <div id="mainContainer">
-        <div id="header">
-            <a-input ref=botWebhookKeyInput v-bind:addon-before="botInterfaceUrl"
-                placeholder="企业微信群机器人key" v-model:value="botMessage.key" />
+    <div id="container">
+        <div id="title">
+            <a-space id="titleSpaceLeft">
+                <a-switch v-on:change="onScheduleChange" v-model:checked="isScheduleStart" />
+                <span>开启定时任务</span>
+            </a-space>
+            <a-space id="titleSpaceRight" align="end">
+                <a-button v-on:click="onDownloadScript">下载运行脚本</a-button>
+                <a-button v-on:click="onDownloadConfig">下载配置文件</a-button>
+                <a-button v-on:click="onLoadConfig">加载配置文件</a-button>
+            </a-space>
+            <div id="botWebhookKeyInputContainer">
+                <a-input id="botWebhookKeyInput" ref=botWebhookKeyInput v-bind:addon-before="botInterfaceUrl"
+                    placeholder="企业微信群机器人key" v-model:value="botMessage.key" />
+            </div>
         </div>
-        <div id="center">
-            <TaskList v-bind:tasks="botMessage.tasks"
+        <a-divider id="titleDivider" />
+        <div id="mainContainer">
+            <TaskList id="taskList"
+                v-bind:tasks="botMessage.tasks"
                 v-on:selected="onSelected"
                 v-bind:selectedIndex="selectedIndex"
                 v-on:addTask="onAddTask"></TaskList>
-            <TaskSettings v-bind:task="botMessage.tasks[selectedIndex]"
+            <TaskSettings id="taskSettings"
+                v-bind:task="botMessage.tasks[selectedIndex]"
                 v-bind:botKey="botMessage.key"></TaskSettings>
-        </div>
-        <div id="footer">
-            <a-button v-on:click="onDownloadScript">下载运行脚本</a-button>
-            <a-button v-on:click="onDownloadConfig">下载配置文件</a-button>
-            <a-button v-on:click="onLoadConfig">加载配置文件</a-button>
-            <div>开启定时任务</div>
-            <a-switch v-on:change="onScheduleChange" v-model:checked="isScheduleStart" />
         </div>
     </div>
 </template>
@@ -124,9 +131,50 @@ export default defineComponent({
 </script>
 
 <style lang="css">
-#center {
+#container {
     width: 100%;
     height: 100%;
+    max-height: 100%;
     display: flex;
+    flex-direction: column;
+    position: relative;
 }
+#title {
+    width: 100%;
+    padding: 15px;
+    display: flex;
+    flex-wrap: wrap;
+}
+#titleSpaceRight {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: flex-end;
+}
+#botWebhookKeyInputContainer {
+
+    width: 100%;
+    padding-top: 10px;
+}
+
+#titleDivider {
+    margin: 0px;
+}
+
+#mainContainer {
+    flex-grow: 1;
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    overflow: hidden;
+}
+#header {
+    margin: 15px;
+}
+#taskList {
+    width: 200px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    position: relative;
+}
+
 </style>

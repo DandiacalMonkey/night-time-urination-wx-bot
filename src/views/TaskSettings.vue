@@ -1,26 +1,34 @@
 <template>
-    <div>
-        <a-time-picker v-model:value="task.time"
-            valueFormat="HH:mm" format="HH:mm"></a-time-picker>
-        <a-checkbox v-model:checked="checkAllWeek"
-            v-bind:indeterminate="indeterminateWeek"
-            v-on:change="onCheckAllWeek">
-            全部选择
-        </a-checkbox>
-        <a-checkbox-group v-model:value="task.week"
-            v-bind:options="weekOptions" />
+    <a-space id="taskSetting" direction="vertical">
+        <a-space>
+            <span>发送时间</span>
+            <a-time-picker v-model:value="task.time"
+                valueFormat="HH:mm" format="HH:mm"></a-time-picker>
+        </a-space>
+        <a-space>
+            <a-checkbox v-model:checked="checkAllWeek"
+                v-bind:indeterminate="indeterminateWeek"
+                v-on:change="onCheckAllWeek">
+                全部选择
+            </a-checkbox>
+            <a-checkbox-group v-model:value="task.week"
+                v-bind:options="weekOptions" />
+        </a-space>
         <a-checkbox v-model:checked="task.weekdays">仅工作日</a-checkbox>
-        <a-select v-bind:options="supportMessageTypes"
-            v-model:value="task.msgtype">
-        </a-select>
+        <a-space>
+            <span>消息类型</span>
+            <a-select v-bind:options="supportMessageTypes"
+                v-model:value="task.msgtype">
+            </a-select>
+        </a-space>
         <div id="textSettings" v-if="task.msgtype == BotMessageType.TEXT">
             <div>消息内容</div>
             <a-input v-model:value="task.text.content"></a-input>
             <div>提醒成员id(一般为工号)</div>
-            <a-select mode="tags" v-model:value="task.text.mentioned_list">
+            <a-select class="mentionedList" mode="tags" v-model:value="task.text.mentioned_list">
             </a-select>
             <div>提醒成员手机号</div>
-            <a-select mode="tags" v-model:value="task.text.mentioned_mobile_list">
+            <a-select class="mentionedMobileList" mode="tags" v-model:value="task.text.mentioned_mobile_list">
             </a-select>
         </div>
         <div id="textSettings" v-else-if="task.msgtype == BotMessageType.IMAGE">
@@ -53,7 +61,7 @@
         <a-button v-on:click="sendMessage">
             发送
         </a-button>
-    </div>
+    </a-space>
 </template>
 
 <script lang="ts">
@@ -299,5 +307,15 @@ export default defineComponent({
 </script>
 
 <style lang="css">
-  	
+#taskSettings {
+    width: 100%;
+    padding: 15px;
+    position: relative;
+}
+.mentionedList {
+    width: 100%;
+}
+.mentionedMobileList {
+    width: 100%;
+}
 </style>

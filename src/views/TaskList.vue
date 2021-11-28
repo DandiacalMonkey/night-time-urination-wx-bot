@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="taskList">
     <a-list item-layout="horizontal" :data-source="tasks">
       <template #renderItem="{ item, index }">
         <a-list-item v-bind:class="{taskItem: index != selectedIndex, selectedTaskItem: index == selectedIndex}" v-on:click="$emit('selected', index)">
@@ -47,6 +47,11 @@ export default defineComponent({
 </script>
 
 <style lang="css">
+#taskList {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
 .taskItem:hover {
     background: rgba(0, 0, 0, 0.1);
 }
@@ -55,5 +60,8 @@ export default defineComponent({
 }
 .taskItemName {
     user-select: none;
+}
+.ant-list-item-meta {
+    padding-left: 15px;
 }
 </style>
